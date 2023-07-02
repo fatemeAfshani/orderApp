@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { DatabaseModule } from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -15,7 +15,7 @@ import { OrdersService } from './orders.service';
       validationSchema: Joi.object({
         MONGODB_URI: Joi.string().required(),
       }),
-      envFilePath: '/apps/orders/.env',
+      envFilePath: './apps/orders/.env',
     }),
     DatabaseModule,
     MongooseModule.forFeature([{ name: Order.name, schema: orderSchema }]),
