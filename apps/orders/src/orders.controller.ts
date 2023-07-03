@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
-import { CreateOrderDto } from './dtos/createOrder.dto';
-import { UpdateOrderDto } from './dtos/updateOrder.dto';
+import { CreateOrderDto } from './dtos/create-order.dto';
 import { Order } from './order.schema';
 import { OrdersService } from './orders.service';
 
@@ -13,15 +12,15 @@ export class OrdersController {
   //   return this.ordersService.findOne(id);
   // }
 
-  // @Get()
-  // getAll(): Promise<Order[]> {
-  //   return this.ordersService.findAll();
-  // }
+  @Get()
+  getOrders(): Promise<Order[]> {
+    return this.ordersService.getOrders();
+  }
 
-  // @Post()
-  // create(@Body() orderDto: CreateOrderDto): Promise<Order> {
-  //   return this.ordersService.create(orderDto);
-  // }
+  @Post()
+  create(@Body() orderDto: CreateOrderDto): Promise<Order> {
+    return this.ordersService.createOrder(orderDto);
+  }
 
   // @Patch(':id')
   // pudate(

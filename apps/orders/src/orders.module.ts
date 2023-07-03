@@ -14,7 +14,9 @@ import { OrdersService } from './orders.service';
       isGlobal: true,
       validationSchema: Joi.object({
         MONGODB_URI: Joi.string().required(),
+        PORT: Joi.number().required(),
       }),
+      expandVariables: true,
       envFilePath: './apps/orders/.env',
     }),
     DatabaseModule,
