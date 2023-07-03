@@ -18,6 +18,32 @@ services:
     networks:
       - order-app
 
+
+  billings:
+    build:
+      context: .
+      dockerfile: ./apps/billings/Dockerfile
+      target: development
+    command: npm run start:dev billings
+    env_file:
+      - ./apps/billings/.env
+    depends_on:
+      - rabbitmq
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - order-app
+
+  rabbitmq: 
+    image: rabbitmq
+    volumes:
+    - rabbit:/var/lib/rabbitmq/
+    ports:
+      - '5672:5672'
+    networks:
+      - order-app
+
   mongo:
     container_name: mongo
     image: mongo
@@ -32,6 +58,8 @@ services:
 
 volumes:
   mongodb:
+    driver: local
+  rabbit:
     driver: local
 
 networks:

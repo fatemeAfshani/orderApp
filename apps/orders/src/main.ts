@@ -4,7 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { OrdersModule } from './orders.module';
 
 async function bootstrap() {
-  const logger = new Logger();
+  const logger = new Logger('orders');
   const app = await NestFactory.create(OrdersModule);
   const configService = app.get(ConfigService);
   app.useGlobalPipes(new ValidationPipe());
