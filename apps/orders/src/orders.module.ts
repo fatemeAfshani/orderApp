@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { DatabaseModule } from '@app/common';
+import { DatabaseModule, RmqModule } from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -15,12 +15,15 @@ import { OrdersService } from './orders.service';
       validationSchema: Joi.object({
         MONGODB_URI: Joi.string().required(),
         PORT: Joi.number().required(),
+        RMQ_URI: Joi.string().required(),
+        RMQ_BILLING_QUEUE: Joi.string().required(),
       }),
       expandVariables: true,
       envFilePath: './apps/orders/.env',
     }),
     DatabaseModule,
     MongooseModule.forFeature([{ name: Order.name, schema: orderSchema }]),
+    RmqModule.register({ name: 'billing' }),
   ],
   controllers: [OrdersController],
   providers: [OrdersService, OrderRepository],
