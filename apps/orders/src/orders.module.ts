@@ -1,5 +1,5 @@
 import * as Joi from 'joi';
-import { DatabaseModule, RmqModule } from '@app/common';
+import { AuthModule, DatabaseModule, RmqModule } from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -24,6 +24,7 @@ import { OrdersService } from './orders.service';
     DatabaseModule,
     MongooseModule.forFeature([{ name: Order.name, schema: orderSchema }]),
     RmqModule.register({ name: 'billing' }),
+    AuthModule,
   ],
   controllers: [OrdersController],
   providers: [OrdersService, OrderRepository],
