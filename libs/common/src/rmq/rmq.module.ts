@@ -25,7 +25,7 @@ export class RmqModule {
                 // queue: configService.get<string>(`RMQ_${name}_QUEUE`),
 
                 urls: ['amqp://rabbitmq'],
-                queue: 'billing',
+                queue: name,
               },
             }),
             inject: [ConfigService],
