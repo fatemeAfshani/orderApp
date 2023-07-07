@@ -1,5 +1,5 @@
-import { RmqService } from '@app/common';
-import { Controller } from '@nestjs/common';
+import { JwtAuthGuard, RmqService } from '@app/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import {
   Ctx,
   MessagePattern,
@@ -16,6 +16,7 @@ export class BillingsController {
   ) {}
 
   @MessagePattern('order_created')
+  @UseGuards(JwtAuthGuard)
   async handleCreateOrder(@Payload() data: any, @Ctx() context: RmqContext) {
     await this.billingsService.bill(data);
     this.rmqService.ack(context);
