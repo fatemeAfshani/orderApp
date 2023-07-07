@@ -14,9 +14,12 @@ export class UsersService {
 
   async createUser(request: CreateUserRequest) {
     let user: User;
-    user = await this.usersRepository.findOne({
-      email: request.email,
-    });
+    user = await this.usersRepository.findOne(
+      {
+        email: request.email,
+      },
+      false,
+    );
     if (user) {
       throw new UnprocessableEntityException('Email already exists.');
     }
@@ -24,6 +27,7 @@ export class UsersService {
       ...request,
       password: await bcrypt.hash(request.password, 10),
     });
+    delete user.password;
     return user;
   }
 

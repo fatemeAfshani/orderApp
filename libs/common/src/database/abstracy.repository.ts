@@ -30,12 +30,19 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
     ).toJSON() as unknown as TDocument;
   }
 
-  async findOne(filterQuery: FilterQuery<TDocument>): Promise<TDocument> {
+  async findOne(
+    filterQuery: FilterQuery<TDocument>,
+    returnError = true,
+  ): Promise<TDocument | null> {
     const document = await this.model.findOne(filterQuery, {}, { lean: true });
 
     if (!document) {
       this.logger.warn('Documdaent not found with filterQuery', filterQuery);
-      throw new NotFoundException('data not found.');
+      if (returnError) {
+        throw new NotFoundException('data not found.');
+      } else {
+        return null;
+      }
     }
 
     return document;
