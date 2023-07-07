@@ -10,6 +10,8 @@ services:
       - ./apps/orders/.env
     depends_on:
       - mongo
+      - billings
+      - auth
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -32,6 +34,26 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      - order-app
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: npm run start:dev auth
+    env_file:
+      - ./apps/auth/.env
+    depends_on:
+      - mongo
+      - rabbitmq
+
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - '8001:8001'
     networks:
       - order-app
 
