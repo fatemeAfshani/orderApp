@@ -17,12 +17,20 @@ export class OrdersService {
     return this.orderRepository.find({});
   }
 
-  async createOrder(order: CreateOrderDto): Promise<Order> {
+  async createOrder(
+    order: CreateOrderDto,
+    authentication: string,
+  ): Promise<Order> {
     // const session = await this.orderRepository.startTransaction();
     try {
       // const newOrder = await this.orderRepository.create(order, { session });
       const newOrder = await this.orderRepository.create(order);
-      await lastValueFrom(this.billingClient.emit('order_created', { order }));
+      await lastValueFrom(
+        this.billingClient.emit('order_created', {
+          order,
+          Authentication: authentication,
+        }),
+      );
       // await session.commitTransaction();
       return newOrder;
     } catch (error) {
