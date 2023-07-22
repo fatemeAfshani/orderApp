@@ -6,7 +6,7 @@ COPY package.json ./
 COPY yarn.lock ./
 
 
-RUN yarn install
+RUN yarn install --production=false
 
 COPY . .
 EXPOSE 8001

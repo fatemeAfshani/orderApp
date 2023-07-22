@@ -4,6 +4,7 @@ import { AuthModule } from './auth.module';
 import { RmqOptions } from '@nestjs/microservices';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
@@ -16,6 +17,16 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   await app.startAllMicroservices();
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Auth App')
+    .setDescription('The user app API description')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+
+  SwaggerModule.setup('api/docs', app, document);
   await app.listen(configService.get('PORT'));
 }
 bootstrap();
